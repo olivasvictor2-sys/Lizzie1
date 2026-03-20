@@ -1,138 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flowers For Lizzie</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowers For Lizzie</title>
 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            background-color: #DCC5A0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background-color: #DCC5A0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
 
-        .center {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+.center {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
 
-        /* Flower button */
-        .flower-btn {
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
+/* Flower button */
+.flower-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
 
-        img {
-            max-width: 220px;
-            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
-        }
+img {
+    max-width: 220px;
+    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
+}
 
-        .title {
-            margin-top: 15px;
-            font-size: 1.5rem;
-            color: #7B3F00;
-            letter-spacing: 2px;
-        }
+.title {
+    margin-top: 15px;
+    font-size: 1.5rem;
+    color: #7B3F00;
+    letter-spacing: 2px;
+}
 
-        .line {
-            width: 200px;
-            height: 2px;
-            background-color: #7B3F00;
-            margin-top: 8px;
-        }
+.line {
+    width: 200px;
+    height: 2px;
+    background-color: #7B3F00;
+    margin-top: 8px;
+}
 
-        /* Seed */
-        .seed {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: #7B3F00;
-            border-radius: 50%;
-            opacity: 0;
-        }
+/* Seed */
+.seed {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #7B3F00;
+    border-radius: 50%;
+    opacity: 0;
+}
 
-        /* Ground line */
-        .ground {
-            position: absolute;
-            bottom: 40px;
-            height: 3px;
-            width: 0;
-            background-color: #7B3F00;
-        }
+/* Ground */
+.ground {
+    position: absolute;
+    bottom: 100px;
+    height: 3px;
+    width: 0;
+    background-color: black;
+}
 
-        /* Animations */
-        @keyframes fall {
-            0% { top: 40%; opacity: 1; }
-            100% { top: 80%; opacity: 1; }
-        }
+/* Tree */
+.tree {
+    position: absolute;
+    bottom: 103px; /* sits on ground */
+    width: 4px;
+    height: 0;
+    background-color: #7B3F00;
+}
 
-        @keyframes growLine {
-            0% { width: 0; }
-            100% { width: 80%; }
-        }
+.branch {
+    position: absolute;
+    width: 3px;
+    height: 0;
+    background-color: #7B3F00;
+}
 
-        .animate-seed {
-            animation: fall 2s ease forwards;
-        }
+/* Animations */
+@keyframes fall {
+    0% { top: 40%; opacity: 1; }
+    100% { top: calc(100% - 120px); opacity: 1; }
+}
 
-        .animate-ground {
-            animation: growLine 2s ease forwards;
-        }
+@keyframes growLine {
+    0% { width: 0; }
+    100% { width: 80%; }
+}
 
-        .hidden {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-    </style>
+@keyframes growTree {
+    0% { height: 0; }
+    100% { height: 120px; }
+}
+
+@keyframes growBranchLeft {
+    0% { height: 0; transform: rotate(-30deg); }
+    100% { height: 60px; transform: rotate(-30deg); }
+}
+
+@keyframes growBranchRight {
+    0% { height: 0; transform: rotate(30deg); }
+    100% { height: 60px; transform: rotate(30deg); }
+}
+
+.animate-seed {
+    animation: fall 2s ease forwards;
+}
+
+.animate-ground {
+    animation: growLine 2s ease forwards;
+}
+
+.animate-tree {
+    animation: growTree 2s ease forwards;
+}
+
+.animate-branch-left {
+    animation: growBranchLeft 1.5s ease forwards;
+}
+
+.animate-branch-right {
+    animation: growBranchRight 1.5s ease forwards;
+}
+
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+</style>
 </head>
 
 <body>
-    <div class="center">
-        
-        <button class="flower-btn" onclick="plantSeed()">
-            <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
-        </button>
+<div class="center">
 
-        <div class="title" id="title">Flowers For Lizzie</div>
-        <div class="line" id="line"></div>
+    <button class="flower-btn" onclick="plantSeed()">
+        <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png">
+    </button>
 
-        <div class="seed" id="seed"></div>
-        <div class="ground" id="ground"></div>
-    </div>
+    <div class="title" id="title">Flowers For Lizzie</div>
+    <div class="line" id="line"></div>
 
-    <script>
-        function plantSeed() {
-            // Hide flower + text
-            document.querySelector(".flower-btn").classList.add("hidden");
-            document.getElementById("title").classList.add("hidden");
-            document.getElementById("line").classList.add("hidden");
+    <div class="seed" id="seed"></div>
+    <div class="ground" id="ground"></div>
 
-            const seed = document.getElementById("seed");
-            const ground = document.getElementById("ground");
+    <!-- Tree elements -->
+    <div class="tree" id="tree"></div>
+    <div class="branch" id="branchL"></div>
+    <div class="branch" id="branchR"></div>
 
-            // Show seed
-            seed.style.opacity = "1";
-            seed.style.top = "40%";
-            seed.style.left = "50%";
-            seed.style.transform = "translateX(-50%)";
+</div>
 
-            // Animate seed falling
-            seed.classList.add("animate-seed");
+<script>
+function plantSeed() {
 
-            // Animate ground line
-            setTimeout(() => {
-                ground.style.left = "10%";
-                ground.classList.add("animate-ground");
-            }, 500);
-        }
-    </script>
+    document.querySelector(".flower-btn").classList.add("hidden");
+    document.getElementById("title").classList.add("hidden");
+    document.getElementById("line").classList.add("hidden");
+
+    const seed = document.getElementById("seed");
+    const ground = document.getElementById("ground");
+
+    seed.style.opacity = "1";
+    seed.style.left = "50%";
+    seed.style.transform = "translateX(-50%)";
+
+    seed.classList.add("animate-seed");
+
+    setTimeout(() => {
+        ground.style.left = "10%";
+        ground.classList.add("animate-ground");
+    }, 500);
+
+    // Grow tree after seed lands
+    setTimeout(() => {
+        seed.style.opacity = "0";
+
+        const tree = document.getElementById("tree");
+        const branchL = document.getElementById("branchL");
+        const branchR = document.getElementById("branchR");
+
+        tree.style.left = "50%";
+        tree.style.transform = "translateX(-50%)";
+        tree.classList.add("animate-tree");
+
+        // branches
+        branchL.style.left = "50%";
+        branchL.style.bottom = "180px";
+        branchL.classList.add("animate-branch-left");
+
+        branchR.style.left = "50%";
+        branchR.style.bottom = "180px";
+        branchR.classList.add("animate-branch-right");
+
+    }, 2200);
+}
+</script>
+
 </body>
 </html>
