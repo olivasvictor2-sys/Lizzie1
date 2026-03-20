@@ -10,11 +10,13 @@
             margin: 0;
             height: 100vh;
             background-color: #DCC5A0;
+            font-family: Arial, sans-serif;
         }
 
         .center {
             height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
@@ -24,12 +26,29 @@
             height: auto;
             filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
         }
+
+        .title {
+            margin-top: 15px;
+            font-size: 1.5rem;
+            color: #7B3F00;
+            letter-spacing: 2px;
+        }
+
+        .line {
+            width: 200px;
+            height: 2px;
+            background-color: #7B3F00;
+            margin-top: 8px;
+        }
     </style>
 </head>
 
 <body>
     <div class="center">
         <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
+        
+        <div class="title">Flowers For Lizzie</div>
+        <div class="line"></div>
     </div>
 </body>
 </html>
