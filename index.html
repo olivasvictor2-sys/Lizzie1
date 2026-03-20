@@ -30,7 +30,7 @@ body {
     cursor: pointer;
 }
 
-img.initial {
+img {
     max-width: 220px;
     filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
 }
@@ -62,25 +62,24 @@ img.initial {
 /* Ground line */
 .ground {
     position: absolute;
-    bottom: 80px;
+    bottom: 100px;
     height: 3px;
     width: 0;
     background-color: black;
 }
 
-/* Sunflower field */
-.field-flower {
+/* Sunflowers */
+.sunflower {
     position: absolute;
-    bottom: 80px;
+    bottom: 100px;
     width: 60px;
+    transform-origin: bottom center;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 1.8s ease;
+    transition: all 2s ease;
 }
-
-.field-flower.show {
+.sunflower.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-150px); /* grows above ground */
 }
 </style>
 </head>
@@ -89,7 +88,7 @@ img.initial {
 <div class="center">
 
     <button class="flower-btn" onclick="plantSeed()">
-        <img class="initial" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
+        <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
     </button>
 
     <div class="title" id="title">Flowers For Lizzie</div>
@@ -98,17 +97,13 @@ img.initial {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Sunflower field (50+ flowers) -->
-    <!-- Left to right positions spaced evenly -->
-    <script>
-        const positions = [];
-        for (let i = 1; i <= 50; i++) {
-            positions.push(i * 2); // percent of width (approx)
-        }
-        document.write(positions.map(p =>
-            `<img class="field-flower" src="https://toppng.com/free-image/sunflower-Png-transparent-with-clear-background-ID-105561.png" style="left:${p}%; transform: translateX(-50%);" />`
-        ).join(""));
-    </script>
+    <!-- Sunflower row -->
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:10%; transform: translateX(-50%);" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:25%; transform: translateX(-50%);" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:40%; transform: translateX(-50%);" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:55%; transform: translateX(-50%);" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:70%; transform: translateX(-50%);" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:85%; transform: translateX(-50%);" />
 
 </div>
 
@@ -134,15 +129,14 @@ function plantSeed() {
     setTimeout(() => {
         seed.style.opacity = "0";
 
-        const flowers = document.querySelectorAll(".field-flower");
+        const flowers = document.querySelectorAll(".sunflower");
         flowers.forEach((flower, i) => {
             setTimeout(() => {
                 flower.classList.add("show");
-            }, i * 80); // stagger bloom
+            }, i * 400); // stagger growth
         });
-    }, 2000);
+    }, 2200);
 }
 </script>
-
 </body>
 </html>
