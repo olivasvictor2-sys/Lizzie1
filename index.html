@@ -68,27 +68,59 @@ img {
     background-color: black;
 }
 
-/* Flowers */
-.flower {
+/* Sunflower field */
+.sunflower {
     position: absolute;
     bottom: 100px;
-    width: 40px;
-    height: auto;
+    width: 60px;
+    transform-origin: bottom center;
     opacity: 0;
-    transform: translateY(20px) scale(0.5);
-    transition: all 1.5s ease;
-}
-.flower.show {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+    transition: all 2s ease;
 }
 
-/* Optional: slight rotation for natural look */
-.flower:nth-child(even) {
-    transform: rotate(-10deg) scale(0.5);
+/* Stems */
+.stem {
+    position: absolute;
+    width: 4px;
+    background-color: #7B3F00;
+    bottom: 100px;
+    opacity: 0;
+    transition: all 2s ease;
 }
-.flower:nth-child(odd) {
-    transform: rotate(10deg) scale(0.5);
+
+/* Seed drop animation */
+@keyframes fall {
+    0% { top: 40%; opacity: 1; }
+    100% { top: calc(100% - 120px); opacity: 1; }
+}
+
+/* Ground line animation */
+@keyframes growLine {
+    0% { width: 0; }
+    100% { width: 80%; }
+}
+
+.animate-seed {
+    animation: fall 2s ease forwards;
+}
+
+.animate-ground {
+    animation: growLine 2s ease forwards;
+}
+
+.show-flower {
+    opacity: 1;
+    transform: translateY(-150px); /* makes flower rise above ground */
+}
+
+.show-stem {
+    opacity: 1;
+    height: 150px;
+}
+
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 </style>
 </head>
@@ -106,18 +138,30 @@ img {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Flowers will appear here -->
-    <img class="flower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left: 20%;" alt="Sunflower">
-    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Tulip_Flower_PNG_Clipart.png/320px-Tulip_Flower_PNG_Clipart.png" style="left: 35%;" alt="Tulip">
-    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Rose_PNG.png/320px-Rose_PNG.png" style="left: 50%;" alt="Rose">
-    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Cherry_blossom_PNG_Clipart.png/320px-Cherry_blossom_PNG_Clipart.png" style="left: 65%;" alt="Cherry Blossom">
-    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Lavender_PNG_Clipart.png/320px-Lavender_PNG_Clipart.png" style="left: 80%;" alt="Lavender">
+    <!-- Sunflower field -->
+    <div class="stem" id="stem1" style="left:10%;"></div>
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:10%;" alt="Sunflower">
+
+    <div class="stem" id="stem2" style="left:25%;"></div>
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:25%;" alt="Sunflower">
+
+    <div class="stem" id="stem3" style="left:40%;"></div>
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:40%;" alt="Sunflower">
+
+    <div class="stem" id="stem4" style="left:55%;"></div>
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:55%;" alt="Sunflower">
+
+    <div class="stem" id="stem5" style="left:70%;"></div>
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:70%;" alt="Sunflower">
+
+    <div class="stem" id="stem6" style="left:85%;"></div>
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:85%;" alt="Sunflower">
 
 </div>
 
 <script>
 function plantSeed() {
-    // Hide flower + text
+    // Hide initial flower and text
     document.querySelector(".flower-btn").classList.add("hidden");
     document.getElementById("title").classList.add("hidden");
     document.getElementById("line").classList.add("hidden");
@@ -125,28 +169,32 @@ function plantSeed() {
     const seed = document.getElementById("seed");
     const ground = document.getElementById("ground");
 
-    // Show seed and drop it
+    // Drop the seed
     seed.style.opacity = "1";
     seed.style.left = "50%";
     seed.style.transform = "translateX(-50%)";
     seed.classList.add("animate-seed");
 
-    // Animate ground line
+    // Grow ground line
     setTimeout(() => {
         ground.style.left = "10%";
         ground.classList.add("animate-ground");
     }, 500);
 
-    // Show flowers after seed lands
+    // After seed hits, show sunflowers with stems
     setTimeout(() => {
         seed.style.opacity = "0";
-        const flowers = document.querySelectorAll(".flower");
-        flowers.forEach((flower, index) => {
+
+        const flowers = document.querySelectorAll(".sunflower");
+        const stems = document.querySelectorAll(".stem");
+
+        flowers.forEach((flower, i) => {
             setTimeout(() => {
-                flower.classList.add("show");
-            }, index * 500); // stagger growth
+                flower.classList.add("show-flower");
+                stems[i].classList.add("show-stem");
+            }, i * 400); // stagger growth
         });
-    }, 2000);
+    }, 2200);
 }
 </script>
 </body>
