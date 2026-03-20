@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Page</title>
+    <title>Flowers For Lizzie</title>
 
     <style>
         body {
@@ -11,6 +11,7 @@
             height: 100vh;
             background-color: #DCC5A0;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
 
         .center {
@@ -19,11 +20,18 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: relative;
+        }
+
+        /* Flower button */
+        .flower-btn {
+            border: none;
+            background: none;
+            cursor: pointer;
         }
 
         img {
             max-width: 220px;
-            height: auto;
             filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
         }
 
@@ -40,15 +48,91 @@
             background-color: #7B3F00;
             margin-top: 8px;
         }
+
+        /* Seed */
+        .seed {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #7B3F00;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* Ground line */
+        .ground {
+            position: absolute;
+            bottom: 40px;
+            height: 3px;
+            width: 0;
+            background-color: #7B3F00;
+        }
+
+        /* Animations */
+        @keyframes fall {
+            0% { top: 40%; opacity: 1; }
+            100% { top: 80%; opacity: 1; }
+        }
+
+        @keyframes growLine {
+            0% { width: 0; }
+            100% { width: 80%; }
+        }
+
+        .animate-seed {
+            animation: fall 2s ease forwards;
+        }
+
+        .animate-ground {
+            animation: growLine 2s ease forwards;
+        }
+
+        .hidden {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
     </style>
 </head>
 
 <body>
     <div class="center">
-        <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
         
-        <div class="title">Flowers For Lizzie</div>
-        <div class="line"></div>
+        <button class="flower-btn" onclick="plantSeed()">
+            <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
+        </button>
+
+        <div class="title" id="title">Flowers For Lizzie</div>
+        <div class="line" id="line"></div>
+
+        <div class="seed" id="seed"></div>
+        <div class="ground" id="ground"></div>
     </div>
+
+    <script>
+        function plantSeed() {
+            // Hide flower + text
+            document.querySelector(".flower-btn").classList.add("hidden");
+            document.getElementById("title").classList.add("hidden");
+            document.getElementById("line").classList.add("hidden");
+
+            const seed = document.getElementById("seed");
+            const ground = document.getElementById("ground");
+
+            // Show seed
+            seed.style.opacity = "1";
+            seed.style.top = "40%";
+            seed.style.left = "50%";
+            seed.style.transform = "translateX(-50%)";
+
+            // Animate seed falling
+            seed.classList.add("animate-seed");
+
+            // Animate ground line
+            setTimeout(() => {
+                ground.style.left = "10%";
+                ground.classList.add("animate-ground");
+            }, 500);
+        }
+    </script>
 </body>
 </html>
