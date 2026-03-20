@@ -68,52 +68,27 @@ img {
     background-color: black;
 }
 
-/* SVG tree */
-#tree {
+/* Flowers */
+.flower {
     position: absolute;
     bottom: 100px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 200px;
+    width: 40px;
+    height: auto;
     opacity: 0;
+    transform: translateY(20px) scale(0.5);
+    transition: all 1.5s ease;
 }
-#tree path {
-    stroke-dasharray: 1000;
-    stroke-dashoffset: 1000;
-    animation: drawTree 2.5s ease forwards;
-}
-
-/* Animations */
-@keyframes fall {
-    0% { top: 40%; opacity: 1; }
-    100% { top: calc(100% - 120px); opacity: 1; }
-}
-
-@keyframes growLine {
-    0% { width: 0; }
-    100% { width: 80%; }
-}
-
-@keyframes drawTree {
-    from { stroke-dashoffset: 1000; opacity: 1; }
-    to { stroke-dashoffset: 0; opacity: 1; }
-}
-
-.animate-seed {
-    animation: fall 2s ease forwards;
-}
-
-.animate-ground {
-    animation: growLine 2s ease forwards;
-}
-
-.animate-tree {
+.flower.show {
     opacity: 1;
+    transform: translateY(0) scale(1);
 }
 
-.hidden {
-    opacity: 0;
-    transition: opacity 0.5s ease;
+/* Optional: slight rotation for natural look */
+.flower:nth-child(even) {
+    transform: rotate(-10deg) scale(0.5);
+}
+.flower:nth-child(odd) {
+    transform: rotate(10deg) scale(0.5);
 }
 </style>
 </head>
@@ -131,35 +106,12 @@ img {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- SVG tree -->
-    <svg id="tree" viewBox="0 0 200 300">
-        <path d="
-            M100 300 
-            L100 200 
-            
-            M100 230 
-            C80 210, 70 180, 60 150
-            
-            M100 220 
-            C120 200, 140 170, 150 140
-            
-            M100 190 
-            C85 170, 75 140, 70 110
-            
-            M100 180 
-            C115 160, 135 130, 140 100
-            
-            M100 150 
-            C90 130, 85 100, 90 70
-            
-            M100 140 
-            C110 120, 120 90, 115 60
-        "
-        stroke="#7B3F00"
-        stroke-width="4"
-        fill="none"
-        stroke-linecap="round"/>
-    </svg>
+    <!-- Flowers will appear here -->
+    <img class="flower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left: 20%;" alt="Sunflower">
+    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Tulip_Flower_PNG_Clipart.png/320px-Tulip_Flower_PNG_Clipart.png" style="left: 35%;" alt="Tulip">
+    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Rose_PNG.png/320px-Rose_PNG.png" style="left: 50%;" alt="Rose">
+    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Cherry_blossom_PNG_Clipart.png/320px-Cherry_blossom_PNG_Clipart.png" style="left: 65%;" alt="Cherry Blossom">
+    <img class="flower" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Lavender_PNG_Clipart.png/320px-Lavender_PNG_Clipart.png" style="left: 80%;" alt="Lavender">
 
 </div>
 
@@ -173,7 +125,7 @@ function plantSeed() {
     const seed = document.getElementById("seed");
     const ground = document.getElementById("ground");
 
-    // Show seed
+    // Show seed and drop it
     seed.style.opacity = "1";
     seed.style.left = "50%";
     seed.style.transform = "translateX(-50%)";
@@ -185,14 +137,16 @@ function plantSeed() {
         ground.classList.add("animate-ground");
     }, 500);
 
-    // Grow tree after seed lands
+    // Show flowers after seed lands
     setTimeout(() => {
         seed.style.opacity = "0";
-
-        const tree = document.getElementById("tree");
-        tree.classList.add("animate-tree");
-
-    }, 2200);
+        const flowers = document.querySelectorAll(".flower");
+        flowers.forEach((flower, index) => {
+            setTimeout(() => {
+                flower.classList.add("show");
+            }, index * 500); // stagger growth
+        });
+    }, 2000);
 }
 </script>
 </body>
