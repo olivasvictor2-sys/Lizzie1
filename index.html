@@ -59,7 +59,7 @@ img {
     opacity: 0;
 }
 
-/* Ground */
+/* Ground line */
 .ground {
     position: absolute;
     bottom: 100px;
@@ -68,20 +68,19 @@ img {
     background-color: black;
 }
 
-/* Tree */
-.tree {
+/* SVG tree */
+#tree {
     position: absolute;
-    bottom: 103px; /* sits on ground */
-    width: 4px;
-    height: 0;
-    background-color: #7B3F00;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 200px;
+    opacity: 0;
 }
-
-.branch {
-    position: absolute;
-    width: 3px;
-    height: 0;
-    background-color: #7B3F00;
+#tree path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawTree 2.5s ease forwards;
 }
 
 /* Animations */
@@ -95,19 +94,9 @@ img {
     100% { width: 80%; }
 }
 
-@keyframes growTree {
-    0% { height: 0; }
-    100% { height: 120px; }
-}
-
-@keyframes growBranchLeft {
-    0% { height: 0; transform: rotate(-30deg); }
-    100% { height: 60px; transform: rotate(-30deg); }
-}
-
-@keyframes growBranchRight {
-    0% { height: 0; transform: rotate(30deg); }
-    100% { height: 60px; transform: rotate(30deg); }
+@keyframes drawTree {
+    from { stroke-dashoffset: 1000; opacity: 1; }
+    to { stroke-dashoffset: 0; opacity: 1; }
 }
 
 .animate-seed {
@@ -119,15 +108,7 @@ img {
 }
 
 .animate-tree {
-    animation: growTree 2s ease forwards;
-}
-
-.animate-branch-left {
-    animation: growBranchLeft 1.5s ease forwards;
-}
-
-.animate-branch-right {
-    animation: growBranchRight 1.5s ease forwards;
+    opacity: 1;
 }
 
 .hidden {
@@ -141,7 +122,7 @@ img {
 <div class="center">
 
     <button class="flower-btn" onclick="plantSeed()">
-        <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png">
+        <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
     </button>
 
     <div class="title" id="title">Flowers For Lizzie</div>
@@ -150,16 +131,41 @@ img {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Tree elements -->
-    <div class="tree" id="tree"></div>
-    <div class="branch" id="branchL"></div>
-    <div class="branch" id="branchR"></div>
+    <!-- SVG tree -->
+    <svg id="tree" viewBox="0 0 200 300">
+        <path d="
+            M100 300 
+            L100 200 
+            
+            M100 230 
+            C80 210, 70 180, 60 150
+            
+            M100 220 
+            C120 200, 140 170, 150 140
+            
+            M100 190 
+            C85 170, 75 140, 70 110
+            
+            M100 180 
+            C115 160, 135 130, 140 100
+            
+            M100 150 
+            C90 130, 85 100, 90 70
+            
+            M100 140 
+            C110 120, 120 90, 115 60
+        "
+        stroke="#7B3F00"
+        stroke-width="4"
+        fill="none"
+        stroke-linecap="round"/>
+    </svg>
 
 </div>
 
 <script>
 function plantSeed() {
-
+    // Hide flower + text
     document.querySelector(".flower-btn").classList.add("hidden");
     document.getElementById("title").classList.add("hidden");
     document.getElementById("line").classList.add("hidden");
@@ -167,12 +173,13 @@ function plantSeed() {
     const seed = document.getElementById("seed");
     const ground = document.getElementById("ground");
 
+    // Show seed
     seed.style.opacity = "1";
     seed.style.left = "50%";
     seed.style.transform = "translateX(-50%)";
-
     seed.classList.add("animate-seed");
 
+    // Animate ground line
     setTimeout(() => {
         ground.style.left = "10%";
         ground.classList.add("animate-ground");
@@ -183,25 +190,10 @@ function plantSeed() {
         seed.style.opacity = "0";
 
         const tree = document.getElementById("tree");
-        const branchL = document.getElementById("branchL");
-        const branchR = document.getElementById("branchR");
-
-        tree.style.left = "50%";
-        tree.style.transform = "translateX(-50%)";
         tree.classList.add("animate-tree");
-
-        // branches
-        branchL.style.left = "50%";
-        branchL.style.bottom = "180px";
-        branchL.classList.add("animate-branch-left");
-
-        branchR.style.left = "50%";
-        branchR.style.bottom = "180px";
-        branchR.classList.add("animate-branch-right");
 
     }, 2200);
 }
 </script>
-
 </body>
 </html>
