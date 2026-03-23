@@ -55,20 +55,20 @@ img {
     transition: opacity 0.5s ease;
 }
 
-/* Seed */
+/* Seed (OVAL now) */
 .seed {
     position: absolute;
     top: 40%;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 24px;
     background-color: #7B3F00;
-    border-radius: 50%;
+    border-radius: 50% / 60%; /* oval shape */
     opacity: 0;
 }
 
-/* Seed animation */
+/* Slower drop */
 .animate-seed {
-    animation: dropSeed 1s ease forwards;
+    animation: dropSeed 1.8s ease-in forwards;
 }
 
 @keyframes dropSeed {
@@ -95,12 +95,8 @@ img {
 }
 
 @keyframes growGround {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: 90%;
-    }
+    0% { width: 0; }
+    100% { width: 90%; }
 }
 
 /* Sunflowers */
@@ -152,19 +148,19 @@ function plantSeed() {
     const seed = document.getElementById("seed");
     const ground = document.getElementById("ground");
 
-    // Show and drop seed
+    // Show seed
     seed.style.opacity = "1";
     seed.style.left = "50%";
     seed.style.transform = "translateX(-50%)";
+
+    // Grow ground first
+    ground.style.left = "5%";
+    ground.classList.add("animate-ground");
+
+    // Drop seed
     seed.classList.add("animate-seed");
 
-    // Grow ground
-    setTimeout(() => {
-        ground.style.left = "5%";
-        ground.classList.add("animate-ground");
-    }, 500);
-
-    // Grow flowers
+    // EXACT timing when seed hits ground
     setTimeout(() => {
         seed.style.opacity = "0";
 
@@ -174,7 +170,8 @@ function plantSeed() {
                 flower.classList.add("show");
             }, i * 400);
         });
-    }, 2000);
+
+    }, 1800); // matches animation duration
 }
 </script>
 </body>
