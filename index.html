@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flowers For Lizzie</title>
+<title>Seed to Tree</title>
 
 <style>
 body {
@@ -32,21 +32,6 @@ body {
 
 img {
     max-width: 220px;
-    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.25));
-}
-
-.title {
-    margin-top: 15px;
-    font-size: 1.5rem;
-    color: #7B3F00;
-    letter-spacing: 2px;
-}
-
-.line {
-    width: 200px;
-    height: 2px;
-    background-color: #7B3F00;
-    margin-top: 8px;
 }
 
 /* Hide elements */
@@ -55,29 +40,25 @@ img {
     transition: opacity 0.5s ease;
 }
 
-/* Seed (OVAL now) */
+/* Seed (oval) */
 .seed {
     position: absolute;
     top: 40%;
     width: 16px;
     height: 24px;
     background-color: #7B3F00;
-    border-radius: 50% / 60%; /* oval shape */
+    border-radius: 50% / 60%;
     opacity: 0;
 }
 
-/* Slower drop */
+/* Seed drop animation */
 .animate-seed {
     animation: dropSeed 1.8s ease-in forwards;
 }
 
 @keyframes dropSeed {
-    0% {
-        top: 40%;
-    }
-    100% {
-        top: calc(100% - 110px);
-    }
+    0% { top: 40%; }
+    100% { top: calc(100% - 110px); }
 }
 
 /* Ground */
@@ -85,94 +66,66 @@ img {
     position: absolute;
     bottom: 100px;
     height: 3px;
-    width: 0;
+    width: 90%;
     background-color: black;
+    left: 5%;
 }
 
-/* Ground animation */
-.animate-ground {
-    animation: growGround 1s ease forwards;
-}
-
-@keyframes growGround {
-    0% { width: 0; }
-    100% { width: 90%; }
-}
-
-/* Sunflowers */
-.sunflower {
+/* Tree */
+.tree {
     position: absolute;
-    bottom: 100px;
-    width: 60px;
-    transform: translate(-50%, 0);
+    bottom: 100px; /* start at ground */
+    width: 0;
     opacity: 0;
-    transition: all 2s ease;
+    transform-origin: bottom center; /* grow from bottom */
+    transition: all 3s ease;
 }
 
-.sunflower.show {
+.tree.show {
     opacity: 1;
-    transform: translate(-50%, -150px);
+    width: 200px;  /* final width */
 }
 </style>
 </head>
-
 <body>
-<div class="center">
 
+<div class="center">
     <button class="flower-btn" onclick="plantSeed()">
         <img src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" alt="Sunflower">
     </button>
 
-    <div class="title" id="title">Flowers For Lizzie</div>
-    <div class="line" id="line"></div>
-
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Sunflowers -->
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:10%;" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:25%;" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:40%;" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:55%;" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:70%;" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:85%;" />
-
+    <!-- Tree image -->
+    <img id="tree" class="tree" src="Tree.png" alt="Tree">
 </div>
 
 <script>
 function plantSeed() {
-    document.querySelector(".flower-btn").classList.add("hidden");
-    document.getElementById("title").classList.add("hidden");
-    document.getElementById("line").classList.add("hidden");
-
+    const button = document.querySelector(".flower-btn");
     const seed = document.getElementById("seed");
-    const ground = document.getElementById("ground");
+    const tree = document.getElementById("tree");
 
-    // Show seed
+    // hide button
+    button.classList.add("hidden");
+
+    // drop seed
     seed.style.opacity = "1";
     seed.style.left = "50%";
     seed.style.transform = "translateX(-50%)";
-
-    // Grow ground first
-    ground.style.left = "5%";
-    ground.classList.add("animate-ground");
-
-    // Drop seed
     seed.classList.add("animate-seed");
 
-    // EXACT timing when seed hits ground
+    // when seed hits ground, hide seed and show tree
     setTimeout(() => {
         seed.style.opacity = "0";
 
-        const flowers = document.querySelectorAll(".sunflower");
-        flowers.forEach((flower, i) => {
-            setTimeout(() => {
-                flower.classList.add("show");
-            }, i * 400);
-        });
-
-    }, 1800); // matches animation duration
+        // show tree
+        tree.style.opacity = "1";
+        tree.style.width = "200px"; // final width
+    }, 1800); // matches drop duration
 }
 </script>
+
 </body>
 </html>
