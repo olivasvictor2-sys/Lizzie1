@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seed to Tree</title>
+<title>Seed to Tree with Sunflowers</title>
 
 <style>
 body {
@@ -83,7 +83,21 @@ img {
 
 .tree.show {
     opacity: 1;
-    width: 200px;  /* final width */
+    width: 600px;  /* 3x bigger than original 200px */
+}
+
+/* Sunflowers on branches */
+.sunflower {
+    position: absolute;
+    opacity: 0;
+    width: 60px;
+    transform-origin: center center;
+    transition: all 2s ease;
+}
+
+.sunflower.show {
+    opacity: 1;
+    transform: scale(1); /* can grow if desired */
 }
 </style>
 </head>
@@ -97,8 +111,14 @@ img {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Tree image -->
+    <!-- Big Tree -->
     <img id="tree" class="tree" src="Tree.png" alt="Tree">
+
+    <!-- Sunflowers (as leaves) -->
+    <img class="sunflower" id="sf1" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:45%; bottom:350px;">
+    <img class="sunflower" id="sf2" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:50%; bottom:450px;">
+    <img class="sunflower" id="sf3" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:55%; bottom:400px;">
+    <img class="sunflower" id="sf4" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:48%; bottom:520px;">
 </div>
 
 <script>
@@ -106,6 +126,7 @@ function plantSeed() {
     const button = document.querySelector(".flower-btn");
     const seed = document.getElementById("seed");
     const tree = document.getElementById("tree");
+    const sunflowers = document.querySelectorAll(".sunflower");
 
     // hide button
     button.classList.add("hidden");
@@ -120,10 +141,16 @@ function plantSeed() {
     setTimeout(() => {
         seed.style.opacity = "0";
 
-        // show tree
-        tree.style.opacity = "1";
-        tree.style.width = "200px"; // final width
-    }, 1800); // matches drop duration
+        // show big tree
+        tree.classList.add("show");
+
+        // stagger sunflower "leaf" growth
+        sunflowers.forEach((sf, i) => {
+            setTimeout(() => {
+                sf.classList.add("show");
+            }, i * 600); // 600ms delay between each
+        });
+    }, 1800); // matches seed drop duration
 }
 </script>
 
