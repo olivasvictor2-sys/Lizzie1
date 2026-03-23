@@ -17,7 +17,6 @@ body {
 .center {
     height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -30,17 +29,7 @@ body {
     cursor: pointer;
 }
 
-img {
-    max-width: 220px;
-}
-
-/* Hide elements */
-.hidden {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-/* Seed (oval) */
+/* Seed */
 .seed {
     position: absolute;
     top: 40%;
@@ -66,22 +55,27 @@ img {
     position: absolute;
     bottom: 100px;
     height: 3px;
-    width: 90%;
+    width: 0;
     background-color: black;
     left: 5%;
+    transition: width 1s ease;
 }
 
 /* Tree */
 .tree {
     position: absolute;
-    bottom: 100px; /* start at ground */
-    height: 33vh; /* one-third of screen height */
+    bottom: 100px;
+    left: 50%;
+    width: 0;
+    height: 0;
     opacity: 0;
-    transform-origin: bottom center; /* grow from bottom */
+    transform-origin: bottom center;
     transition: all 3s ease;
 }
 
 .tree.show {
+    width: 500%; /* 5x original width */
+    height: 500%; /* 5x original height */
     opacity: 1;
 }
 
@@ -92,6 +86,7 @@ img {
     transform-origin: center center;
     transition: all 2s ease;
 }
+
 .sunflower.show {
     opacity: 1;
 }
@@ -116,8 +111,8 @@ function plantSeed() {
     const button = document.querySelector(".flower-btn");
     const seed = document.getElementById("seed");
     const tree = document.getElementById("tree");
+    const ground = document.getElementById("ground");
 
-    // hide button
     button.classList.add("hidden");
 
     // drop seed
@@ -126,37 +121,41 @@ function plantSeed() {
     seed.style.transform = "translateX(-50%)";
     seed.classList.add("animate-seed");
 
+    // grow ground line
+    ground.style.width = "90%";
+
     setTimeout(() => {
         seed.style.opacity = "0";
 
-        // show tree
+        // show big tree
         tree.classList.add("show");
 
-        // add 100 sunflowers randomly on tree
-        const treeRect = tree.getBoundingClientRect();
-        for (let i = 0; i < 100; i++) {
+        // Define sunflowers over tree branches
+        const sunflowerPositions = [
+            {x: -100, y: -50, scale: 0.5},
+            {x: 0, y: -80, scale: 0.6},
+            {x: 120, y: -60, scale: 0.4},
+            {x: -80, y: -120, scale: 0.7},
+            {x: 60, y: -150, scale: 0.5},
+            // ... add more coordinates here over branches
+        ];
+
+        sunflowerPositions.forEach((pos, i) => {
             const sf = document.createElement("img");
             sf.src = "https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png";
             sf.className = "sunflower";
-
-            // random size 20px to 50px
-            const size = 20 + Math.random() * 30;
-            sf.style.width = size + "px";
-
-            // random position within tree image
-            const x = treeRect.left + Math.random() * treeRect.width;
-            const y = treeRect.bottom - Math.random() * treeRect.height; // from bottom up
-            sf.style.left = x + "px";
-            sf.style.bottom = window.innerHeight - y + "px"; // adjust bottom
+            sf.style.left = `calc(50% + ${pos.x}px)`; // relative to tree center
+            sf.style.bottom = `${100 + pos.y}px`; // relative to ground
+            sf.style.width = `${50 * pos.scale}px`; // scale size
 
             document.body.appendChild(sf);
 
-            // stagger appearance
             setTimeout(() => {
                 sf.classList.add("show");
-            }, i * 30);
-        }
-    }, 1800); // after seed drop
+            }, i * 100); // staggered appearance
+        });
+
+    }, 1800); // seed drop duration
 }
 </script>
 
