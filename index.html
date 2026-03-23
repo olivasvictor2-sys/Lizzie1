@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seed to Big Tree with Sunflowers</title>
+<title>Seed to Tree</title>
 
 <style>
 body {
@@ -17,6 +17,7 @@ body {
 .center {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
@@ -29,7 +30,17 @@ body {
     cursor: pointer;
 }
 
-/* Seed */
+img {
+    max-width: 220px;
+}
+
+/* Hide elements */
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+/* Seed (oval) */
 .seed {
     position: absolute;
     top: 40%;
@@ -55,41 +66,24 @@ body {
     position: absolute;
     bottom: 100px;
     height: 3px;
-    width: 0;
+    width: 90%;
     background-color: black;
     left: 5%;
-    transition: width 1s ease;
 }
 
 /* Tree */
 .tree {
     position: absolute;
-    bottom: 100px;
-    left: 50%;
+    bottom: 100px; /* start at ground */
     width: 0;
-    height: 0;
     opacity: 0;
-    transform-origin: bottom center;
+    transform-origin: bottom center; /* grow from bottom */
     transition: all 3s ease;
 }
 
 .tree.show {
-    width: 250%; /* half of previous 500% */
-    height: 250%;
     opacity: 1;
-    transform: translateX(-50%); /* keep centered */
-}
-
-/* Sunflowers */
-.sunflower {
-    position: absolute;
-    opacity: 0;
-    transform-origin: center center;
-    transition: all 2s ease;
-}
-
-.sunflower.show {
-    opacity: 1;
+    width: 200px;  /* final width */
 }
 </style>
 </head>
@@ -103,7 +97,7 @@ body {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Big Tree -->
+    <!-- Tree image -->
     <img id="tree" class="tree" src="Tree.png" alt="Tree">
 </div>
 
@@ -112,8 +106,8 @@ function plantSeed() {
     const button = document.querySelector(".flower-btn");
     const seed = document.getElementById("seed");
     const tree = document.getElementById("tree");
-    const ground = document.getElementById("ground");
 
+    // hide button
     button.classList.add("hidden");
 
     // drop seed
@@ -122,41 +116,14 @@ function plantSeed() {
     seed.style.transform = "translateX(-50%)";
     seed.classList.add("animate-seed");
 
-    // grow ground line
-    ground.style.width = "90%";
-
+    // when seed hits ground, hide seed and show tree
     setTimeout(() => {
         seed.style.opacity = "0";
 
         // show tree
-        tree.classList.add("show");
-
-        // Sunflower positions on tree branches
-        const sunflowerPositions = [
-            {x: -100, y: -50},
-            {x: 0, y: -80},
-            {x: 120, y: -60},
-            {x: -80, y: -120},
-            {x: 60, y: -150},
-            // add more coordinates for 100+ sunflowers
-        ];
-
-        sunflowerPositions.forEach((pos, i) => {
-            const sf = document.createElement("img");
-            sf.src = "https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png";
-            sf.className = "sunflower";
-            sf.style.left = `calc(50% + ${pos.x}px)`; // relative to tree center
-            sf.style.bottom = `${100 + pos.y}px`; // relative to ground
-            sf.style.width = "60px"; // original size
-
-            document.body.appendChild(sf);
-
-            setTimeout(() => {
-                sf.classList.add("show");
-            }, i * 50); // staggered
-        });
-
-    }, 1800); // after seed drop
+        tree.style.opacity = "1";
+        tree.style.width = "200px"; // final width
+    }, 1800); // matches drop duration
 }
 </script>
 
