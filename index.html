@@ -74,9 +74,10 @@ body {
 }
 
 .tree.show {
-    width: 500%; /* 5x original width */
-    height: 500%; /* 5x original height */
+    width: 250%; /* half of previous 500% */
+    height: 250%;
     opacity: 1;
+    transform: translateX(-50%); /* keep centered */
 }
 
 /* Sunflowers */
@@ -127,17 +128,17 @@ function plantSeed() {
     setTimeout(() => {
         seed.style.opacity = "0";
 
-        // show big tree
+        // show tree
         tree.classList.add("show");
 
-        // Define sunflowers over tree branches
+        // Sunflower positions on tree branches
         const sunflowerPositions = [
-            {x: -100, y: -50, scale: 0.5},
-            {x: 0, y: -80, scale: 0.6},
-            {x: 120, y: -60, scale: 0.4},
-            {x: -80, y: -120, scale: 0.7},
-            {x: 60, y: -150, scale: 0.5},
-            // ... add more coordinates here over branches
+            {x: -100, y: -50},
+            {x: 0, y: -80},
+            {x: 120, y: -60},
+            {x: -80, y: -120},
+            {x: 60, y: -150},
+            // add more coordinates for 100+ sunflowers
         ];
 
         sunflowerPositions.forEach((pos, i) => {
@@ -146,16 +147,16 @@ function plantSeed() {
             sf.className = "sunflower";
             sf.style.left = `calc(50% + ${pos.x}px)`; // relative to tree center
             sf.style.bottom = `${100 + pos.y}px`; // relative to ground
-            sf.style.width = `${50 * pos.scale}px`; // scale size
+            sf.style.width = "60px"; // original size
 
             document.body.appendChild(sf);
 
             setTimeout(() => {
                 sf.classList.add("show");
-            }, i * 100); // staggered appearance
+            }, i * 50); // staggered
         });
 
-    }, 1800); // seed drop duration
+    }, 1800); // after seed drop
 }
 </script>
 
