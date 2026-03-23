@@ -30,17 +30,12 @@ body {
     cursor: pointer;
 }
 
+/* All images default max-width */
 img {
     max-width: 220px;
 }
 
-/* Hide elements */
-.hidden {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
-
-/* Seed (oval) */
+/* Seed */
 .seed {
     position: absolute;
     top: 40%;
@@ -76,14 +71,15 @@ img {
     max-width: none; /* allow scaling bigger */
     position: absolute;
     bottom: 100px;
+    left: 50%;
     opacity: 0;
-    transform-origin: bottom center; /* grow from bottom */
+    transform-origin: bottom center;
     transition: all 3s ease;
 }
 
 .tree.show {
     opacity: 1;
-    width: 1000px;  /* scaled 100% bigger than original 200px */
+    transform: translateX(-50%) scale(2); /* scale 2x proportionally */
 }
 </style>
 </head>
@@ -120,10 +116,9 @@ function plantSeed() {
     setTimeout(() => {
         seed.style.opacity = "0";
 
-        // show tree
-        tree.style.opacity = "1";
-        tree.style.width = "1000px"; // 100% bigger
-    }, 1800); // matches drop duration
+        // show tree scaled proportionally
+        tree.classList.add("show");
+    }, 1800);
 }
 </script>
 
