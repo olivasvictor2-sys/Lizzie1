@@ -23,7 +23,7 @@ body {
     position: relative;
 }
 
-/* Initial sunflower button */
+/* Button */
 .flower-btn {
     border: none;
     background: none;
@@ -49,9 +49,16 @@ img {
     margin-top: 8px;
 }
 
+/* Hide elements */
+.hidden {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
 /* Seed */
 .seed {
     position: absolute;
+    top: 40%;
     width: 20px;
     height: 20px;
     background-color: #7B3F00;
@@ -59,7 +66,21 @@ img {
     opacity: 0;
 }
 
-/* Ground line */
+/* Seed animation */
+.animate-seed {
+    animation: dropSeed 1s ease forwards;
+}
+
+@keyframes dropSeed {
+    0% {
+        top: 40%;
+    }
+    100% {
+        top: calc(100% - 110px);
+    }
+}
+
+/* Ground */
 .ground {
     position: absolute;
     bottom: 100px;
@@ -68,18 +89,33 @@ img {
     background-color: black;
 }
 
+/* Ground animation */
+.animate-ground {
+    animation: growGround 1s ease forwards;
+}
+
+@keyframes growGround {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 90%;
+    }
+}
+
 /* Sunflowers */
 .sunflower {
     position: absolute;
     bottom: 100px;
     width: 60px;
-    transform-origin: bottom center;
+    transform: translate(-50%, 0);
     opacity: 0;
     transition: all 2s ease;
 }
+
 .sunflower.show {
     opacity: 1;
-    transform: translateY(-150px); /* grows above ground */
+    transform: translate(-50%, -150px);
 }
 </style>
 </head>
@@ -97,13 +133,13 @@ img {
     <div class="seed" id="seed"></div>
     <div class="ground" id="ground"></div>
 
-    <!-- Sunflower row -->
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:10%; transform: translateX(-50%);" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:25%; transform: translateX(-50%);" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:40%; transform: translateX(-50%);" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:55%; transform: translateX(-50%);" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:70%; transform: translateX(-50%);" />
-    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:85%; transform: translateX(-50%);" />
+    <!-- Sunflowers -->
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:10%;" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:25%;" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:40%;" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:55%;" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:70%;" />
+    <img class="sunflower" src="https://pngimg.com/uploads/sunflower/sunflower_PNG13409.png" style="left:85%;" />
 
 </div>
 
@@ -116,16 +152,19 @@ function plantSeed() {
     const seed = document.getElementById("seed");
     const ground = document.getElementById("ground");
 
+    // Show and drop seed
     seed.style.opacity = "1";
     seed.style.left = "50%";
     seed.style.transform = "translateX(-50%)";
     seed.classList.add("animate-seed");
 
+    // Grow ground
     setTimeout(() => {
         ground.style.left = "5%";
         ground.classList.add("animate-ground");
     }, 500);
 
+    // Grow flowers
     setTimeout(() => {
         seed.style.opacity = "0";
 
@@ -133,9 +172,9 @@ function plantSeed() {
         flowers.forEach((flower, i) => {
             setTimeout(() => {
                 flower.classList.add("show");
-            }, i * 400); // stagger growth
+            }, i * 400);
         });
-    }, 2200);
+    }, 2000);
 }
 </script>
 </body>
